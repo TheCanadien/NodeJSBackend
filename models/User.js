@@ -21,14 +21,45 @@ const userSchema = new mongoose.Schema({
         min: 8,
         max: 1024
     },
-    date:
+    accountCreated:
     {
         type: Date,
-        default: Date.now
+        default: Date.now,
     },
-
-
-
+    birthday:{
+        type: Date,
+        required: false,
+        private:{ Boolean: true, },
+    },
+    weight:{
+        //metric
+        type: Number,
+        required: false,
+    },
+    height:{
+        type: Number,
+        required: false,
+    },
+    friends:[
+    {
+        username:{
+         type: String,
+         required: true,            
+        }
+    }],
+    public:{
+        type: Boolean,
+        default: true,
+    },
+    admin:{
+      type: Boolean,
+      default: false,
+    },
+    superAdmin:{
+        type:Boolean,
+        default: false
+    }
+    
 });
 
 module.exports = mongoose.model('User', userSchema);

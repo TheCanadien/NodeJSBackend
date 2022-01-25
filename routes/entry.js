@@ -4,9 +4,13 @@ const res = require('express/lib/response');
 const router = express.Router();
 const Entry = require('../models/Entry');
 const verify = require('../verifyToken');
+const User = require('../models/User');
 
 //Get all entries
 router.get('/', async (req,res) =>{
+
+  
+
     try{
        const entry = await Entry.find();
        res.json(entry);
@@ -14,6 +18,8 @@ router.get('/', async (req,res) =>{
     res.json({message: err});
     }
     });
+
+
 
  //Submits first meal in a day data
 router.post('/', verify, async (req,res)=>{
@@ -34,9 +40,13 @@ router.post('/', verify, async (req,res)=>{
 
   //Get meal data entries by date and username
 router.get('/:date/:username', verify, async (req,res) =>{
-    if(req.user.name !== req.params.username){
-      return res.status(400).send("You don't have access")
-    }
+  const friend = await User.findOne({name: req.params.username, "friends.username" : req.user.name});
+  const isAdmin = await User.findOne({name: req.user.name});
+
+  if(req.user.name !== req.params.username && isAdmin.admin === false && !friend){
+    return res.status(400).send("You don't have access")  
+  }
+
 
     try{
   
@@ -54,8 +64,11 @@ router.get('/:date/:username', verify, async (req,res) =>{
 
 //Get meal data over duration of time
 router.get('/:date/:date2/:username', verify, async (req,res) =>{
-  if(req.user.name !== req.params.username){
-    return res.status(400).send("You don't have access")
+  const friend = await User.findOne({name: req.params.username, "friends.username" : req.user.name});
+  const isAdmin = await User.findOne({name: req.user.name});
+
+  if(req.user.name !== req.params.username && isAdmin.admin === false && !friend){
+    return res.status(400).send("You don't have access")  
   }
 
     try{
@@ -96,7 +109,7 @@ router.patch('/:date/:username/:mealnum', verify, async (req,res) =>{
     }
     });
   
-//deleteobject    
+//deletes food_item object   
 router.delete('/:date/:username', verify, async (req,res) => {
 
   if(req.user.name !== req.params.username){

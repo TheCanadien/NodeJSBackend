@@ -11,7 +11,6 @@ router.patch('/:date/:username', verify, async (req,res) =>{
   if(req.user.name !== req.params.username){
     return res.status(400).send("You don't have access")
   }
-
     try{
   
      const queryDate = new Date(req.params.date)
@@ -37,7 +36,7 @@ router.patch('/:date/:username/:mealnum', verify, async (req,res) =>{
 
 
     try{
-  
+     
      const queryDate = new Date(req.params.date)
       const nextDate = new Date(queryDate)
       nextDate.setDate(queryDate.getDate() + 1)

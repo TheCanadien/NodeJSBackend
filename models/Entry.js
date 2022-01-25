@@ -13,7 +13,7 @@ const EntrySchema = mongoose.Schema({
     calories:{type: Number,required: true},
     fats:{type: Number,required: false},
     carbs:{type:Number,required: false},
-    protein:{type:Number,required:false}
+    protein:{type:Number,required:false},
     }],
 
     date: {
