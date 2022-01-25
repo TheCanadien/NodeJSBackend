@@ -1,7 +1,7 @@
 const jwt = require('jsonwebtoken');
 const Valid = require('./models/Valid');
 
-
+//test
 module.exports = async function (req, res, next) {
     const token = req.header('auth-token');
     const accessToken = req.body.accessToken;
