@@ -10,15 +10,13 @@ module.exports = async function (req, res, next) {
     if (!accessToken) return res.status(401).send('Access Denied');
        const verified = validatedToken(accessToken, process.env.TOKEN_SECRET);
        //if token is valid
-       if(verified){
-       // console.log(verified);
+       if(verified)
+       {
         req.user = verified;
-       // console.log(req.user);
         next();
         }
         //if refresh token doesn't exist
         if(!token) return res.status(401).send('Access Denied');
-        //check refresh is validly formated
  
         //check refresh is in valid collection
         const checkValid = await Valid.findOne({"valid.token": token});
