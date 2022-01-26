@@ -9,26 +9,32 @@ module.exports = async function (req, res, next) {
     //If access token doesn't exist
     if (!accessToken) return res.status(401).send('Access Denied');
        const verified = validatedToken(accessToken, process.env.TOKEN_SECRET);
+       console.log('1');
        //if token is valid
        if(verified)
        {
         req.user = verified;
+        console.log('2');
         next();
-        }
+        }else{
         //if refresh token doesn't exist
         if(!token) return res.status(401).send('Access Denied');
- 
+        console.log('3');
         //check refresh is in valid collection
         const checkValid = await Valid.findOne({"valid.token": token});
-       // console.log(checkValid.valid.username);
+       console.log(checkValid);
 
        if(checkValid){
         //console.log(checkValid.valid.username);
+        console.log('4');
         renewTokens(checkValid.valid.username, res);
-        }
-        else{
-           res.status(403).send('Can not process request'); 
-        }
+       }
+       else{
+          res.status(400).send('You do not have access');
+       }
+
+       }
+      
        
 }
 
@@ -65,6 +71,6 @@ function validatedToken(token, secretkey){
         }
     
         const val = await validtoke.save();
-     //   console.log(val);
+         console.log('5');
         res.header('auth-token', refreshtoken).send({accesstoken});
 }
