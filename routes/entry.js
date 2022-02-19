@@ -38,28 +38,36 @@ router.post('/', verify, async (req,res)=>{
   }
   });  
 
+
+
+
+
+
+
   //Get meal data entries by date and username
 router.get('/:date/:username', verify, async (req,res) =>{
-  const friend = await User.findOne({name: req.params.username, "friends.username" : req.user.name});
+  
+try{
+const friend = await User.findOne({name: req.params.username, "friends.username" : req.user.name});
   const isAdmin = await User.findOne({name: req.user.name});
 
   if(req.user.name !== req.params.username && isAdmin.admin === false && !friend){
-    return res.status(400).send("You don't have access")  
+    return res.status(400).send("You don't have access");  
   }
-
-
-    try{
-  
-      const queryDate = new Date(req.params.date)
-      const nextDate = new Date(queryDate)
-      nextDate.setDate(queryDate.getDate() + 1)
-      const searchQuery = {date: {$lt : nextDate, $gte : queryDate},user_name : req.params.username}
-      const entry = await Entry.find(searchQuery)
-     res.json(entry);
+      const queryDate = new Date(req.params.date);
+      const nextDate = new Date(queryDate);
+      nextDate.setDate(queryDate.getDate() + 1);
+      const searchQuery = {date: {$lt : nextDate, $gte : queryDate},user_name : req.params.username};
+      const entry = await Entry.find(searchQuery);
+      const obj = entry[0];
+      console.log('here');
+      console.log(obj);
+     res.json(obj);
       }
       catch(err){
         res.json({message: err})
-      }
+      
+}
   });
 
 //Get meal data over duration of time

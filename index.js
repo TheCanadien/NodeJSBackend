@@ -6,7 +6,7 @@ const bodyParser = require('body-parser');
 const cors = require('cors');
 
 //Middlewares
-app.use(cors());
+app.use(cors({exposedHeaders: ['Content-Length', 'auth-token'],}));
 app.use(bodyParser.json());
 
 //Import Routes
@@ -34,7 +34,7 @@ app.use('/admin', adminRoute);
 
 //ROUTES
 app.get('/', (req,res) =>{
-    res.send('We are on home');
+    res.send('Home');
 }
 );
 

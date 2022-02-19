@@ -4,22 +4,27 @@ const Valid = require('./models/Valid');
 //test
 module.exports = async function (req, res, next) {
     const token = req.header('auth-token');
-    const accessToken = req.body.accessToken;
+    const accessToken = req.header('Authorization');
+//////////////////////////////////////////////////////////
+console.log(req.header('Authorization'));
 
+
+
+/////////////////////////////////////////
     //If access token doesn't exist
-    if (!accessToken) return res.status(401).send('Access Denied');
+    if (!accessToken) return res.status(401).send('Access Denied Bitch');
        const verified = validatedToken(accessToken, process.env.TOKEN_SECRET);
-       console.log('1');
+       console.log('1 ', accessToken);
        //if token is valid
        if(verified)
        {
         req.user = verified;
-        console.log('2');
+        console.log('2 ', accessToken);
         next();
         }else{
         //if refresh token doesn't exist
-        if(!token) return res.status(401).send('Access Denied');
-        console.log('3');
+        if(!token) return res.status(401).send('Access Denied Mother Fucker');
+        console.log('3 ', token);
         //check refresh is in valid collection
         const checkValid = await Valid.findOne({"valid.token": token});
        console.log(checkValid);
@@ -55,7 +60,7 @@ function validatedToken(token, secretkey){
     const loguser = {name: user_name};
 
 
-    const accesstoken = jwt.sign(loguser, process.env.TOKEN_SECRET, {expiresIn: '60m' });
+    const accesstoken = jwt.sign(loguser, process.env.TOKEN_SECRET, {expiresIn: '30m' });
     const refreshtoken = jwt.sign(loguser, process.env.REFRESH_TOKEN_SECRET);
     const validtoke = new Valid(
         {
