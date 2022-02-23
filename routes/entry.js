@@ -6,6 +6,7 @@ const Entry = require('../models/Entry');
 const verify = require('../verifyToken');
 const User = require('../models/User');
 
+/*
 //Get all entries
 router.get('/', async (req,res) =>{
 
@@ -18,6 +19,22 @@ router.get('/', async (req,res) =>{
     res.json({message: err});
     }
     });
+*/
+
+
+router.get('/', verify, async(req,res) =>{
+ 
+  try{
+  const validUser = await User.findOne({name: req.user.name});
+  console.log(validUser);  
+res.json(validUser.name);
+  }
+  catch(err){
+  res.json({messsage: err})
+  }
+})
+
+
 
 
 
@@ -125,11 +142,17 @@ router.delete('/:date/:username', verify, async (req,res) => {
   }
 
     try{
+
+       console.log(req.params.username);
+      console.log(req.params.date);
+
+
+
         const queryDate = new Date(req.params.date)
         const nextDate = new Date(queryDate)
         nextDate.setDate(queryDate.getDate() + 1)  
        const removeEntry = await Entry.deleteOne({date: {$lt : nextDate, $gte : queryDate},
-        user_name : req.params.username, "food_item":{ $size : 0}});
+        user_name : req.params.username, "food_item":{ $size : 1}});
          res.json(removeEntry);
       }
       

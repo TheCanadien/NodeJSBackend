@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const User = require('../models/User');
 const verify = require('../verifyToken');
+const Entry = require('../models/Entry');
 
 
 //update personal data
@@ -41,6 +42,33 @@ catch(err){
 }
    }
    );
+
+//Update Daily Weight
+router.patch('/:date/:username', verify, async(req,res)=>{
+  
+
+console.log(req.user.name);
+console.log(req.params);
+
+
+   if(req.user.name !== req.params.username){
+      return res.status(400).send("You don't have access")
+    }
+      try{
+    
+       const queryDate = new Date(req.params.date)
+        const nextDate = new Date(queryDate)
+        nextDate.setDate(queryDate.getDate() + 1)
+       const newEntry = await Entry.updateOne({date: {$lt : nextDate, $gte : queryDate},
+        user_name : req.params.username},
+         {$set: {weight: req.body.weight}});
+         res.json(newEntry);
+      }catch(err){
+        res.json({message: err})
+      }
+
+});
+
 
 
 

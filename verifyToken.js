@@ -7,12 +7,13 @@ module.exports = async function (req, res, next) {
     const accessToken = req.header('Authorization');
 //////////////////////////////////////////////////////////
 console.log(req.header('Authorization'));
+console.log(req.params);
 
 
 
 /////////////////////////////////////////
     //If access token doesn't exist
-    if (!accessToken) return res.status(401).send('Access Denied Bitch');
+    if (!accessToken) return res.status(401).send('Access Denied');
        const verified = validatedToken(accessToken, process.env.TOKEN_SECRET);
        console.log('1 ', accessToken);
        //if token is valid
@@ -23,7 +24,7 @@ console.log(req.header('Authorization'));
         next();
         }else{
         //if refresh token doesn't exist
-        if(!token) return res.status(401).send('Access Denied Mother Fucker');
+        if(!token) return res.status(401).send('Access Denied');
         console.log('3 ', token);
         //check refresh is in valid collection
         const checkValid = await Valid.findOne({"valid.token": token});
