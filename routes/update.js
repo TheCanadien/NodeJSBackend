@@ -18,8 +18,13 @@ router.patch('/:date/:username', verify, async (req,res) =>{
       nextDate.setDate(queryDate.getDate() + 1)
      const newEntry = await Entry.findOneAndUpdate({date: {$lt : nextDate, $gte : queryDate},
       user_name : req.params.username},
-       {$addToSet: {food_item: req.body.food_item}}, {returnOriginal:false});
+       {$addToSet: {food_item: req.body.food_item}},{returnOriginal:false});
+       newEntry.total_calories = parseInt(newEntry.total_calories) + parseInt(req.body.food_item[0].calories);
+       await newEntry.save();
+       console.log(newEntry);
        res.json(newEntry);
+
+       
     }catch(err){
       res.json({message: err})
     }
@@ -38,16 +43,24 @@ router.patch('/:date/:username/:mealnum', verify, async (req,res) =>{
     try{
      console.log(req.body)
      console.log(req.params.id);
+
+
 /////////////////////////////////////////////////////////////////////////////////////////////
   const queryDate = new Date(req.params.date)
       const nextDate = new Date(queryDate)
       nextDate.setDate(queryDate.getDate() + 1)
-     const updateEntry = await Entry.updateOne({date: {$lt : nextDate, $gte : queryDate},
+     const updateEntry = await Entry.findOneAndUpdate({date: {$lt : nextDate, $gte : queryDate},
       user_name : req.params.username},
        {$set: {"food_item.$[elem]": req.body.food_item}},
        { arrayFilters: [ { "elem.meal_number":  req.params.mealnum  } ] } );
+  //////////////////////////////////////////////////////////////////////////////////
+   updateEntry.total_calories = parseInt(updateEntry.total_calories) - parseInt(req.body.previouscal) + parseInt(req.body.food_item[0].calories);
+   await updateEntry.save();
+    const returnEntry = await Entry.findOne({date: {$lt : nextDate, $gte : queryDate},
+      user_name : req.params.username});
+   
 /////////////////////////////////////////////////////////////////////////////////////
-       res.json(updateEntry);
+       res.json(returnEntry);
     }catch(err){
       res.json({message: err})
     }

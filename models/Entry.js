@@ -25,6 +25,10 @@ const EntrySchema = mongoose.Schema({
         type: Number,
         required: false
     },
+    total_calories:{
+        type: Number,
+        required: false
+    }
 
 
 });

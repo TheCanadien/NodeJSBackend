@@ -41,12 +41,16 @@ res.json(validUser.name);
 
  //Submits first meal in a day data
 router.post('/', verify, async (req,res)=>{
+  //console.log(req.body.food_item[0].calories);
+
 
     const entry = new Entry({
      user_name: req.user.name,
      food_item: req.body.food_item,
      date: new Date(req.body.date),
      weight: req.body.weight,
+  
+     total_calories: req.body.food_item[0].calories,
     });
   try{
     const savedEntry = await entry.save();
@@ -124,9 +128,10 @@ router.patch('/:date/:username/:mealnum', verify, async (req,res) =>{
       const queryDate = new Date(req.params.date)
       const nextDate = new Date(queryDate)
       nextDate.setDate(queryDate.getDate() + 1)
-     const removeEntry = await Entry.updateOne({date: {$lt : nextDate, $gte : queryDate},
+     const removeEntry = await Entry.findOneAndUpdate({date: {$lt : nextDate, $gte : queryDate},
       user_name : req.params.username},
        {$pull: {"food_item": {"meal_number" : req.params.mealnum}}});
+       console.log(removeEntry);
        res.json(removeEntry);
     }
     
