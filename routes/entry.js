@@ -131,6 +131,8 @@ router.patch('/:date/:username/:mealnum', verify, async (req,res) =>{
       user_name : req.params.username},
        {$pull: {"food_item": {"meal_number" : req.params.mealnum}}});
        console.log(removeEntry);
+       const reduce_calories = remove
+      
        res.json(removeEntry);
     }
     
