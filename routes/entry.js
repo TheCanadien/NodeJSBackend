@@ -6,8 +6,9 @@ const Entry = require('../models/Entry');
 const verify = require('../verifyToken');
 const User = require('../models/User');
 
-/*
+
 //Get all entries
+/*
 router.get('/', async (req,res) =>{
 
   

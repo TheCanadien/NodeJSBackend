@@ -56,11 +56,11 @@ router.patch('/:date/:username/:mealnum', verify, async (req,res) =>{
   //////////////////////////////////////////////////////////////////////////////////
    updateEntry.total_calories = parseInt(updateEntry.total_calories) - parseInt(req.body.previouscal) + parseInt(req.body.food_item[0].calories);
    await updateEntry.save();
-    const returnEntry = await Entry.findOne({date: {$lt : nextDate, $gte : queryDate},
-      user_name : req.params.username});
+   // const returnEntry = await Entry.findOne({date: {$lt : nextDate, $gte : queryDate},
+    //  user_name : req.params.username});
    
 /////////////////////////////////////////////////////////////////////////////////////
-       res.json(returnEntry);
+       res.json(updateEntry);
     }catch(err){
       res.json({message: err})
     }
