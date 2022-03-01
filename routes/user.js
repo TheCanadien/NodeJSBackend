@@ -9,8 +9,16 @@ const Entry = require('../models/Entry');
 router.patch('/', verify, async (req,res) =>{
  try{
  const myaccount = await User.findOneAndUpdate({ name: req.user.name }, 
-    {$set: {weight: req.body.weight, birthday: req.body.birthday, height: req.body.height, public: req.body.public}});
-    res.send(myaccount);
+    {$set: {weight: req.body.weight, birthday: req.body.birthday, height: req.body.height, public: req.body.public}} ,{returnOriginal:false});
+ const accountinfo = {
+"weight": myaccount.weight,
+"birthday": myaccount.birthday,
+"height": myaccount.height,
+"public": myaccount.public,
+"username": myaccount.name,
+}   
+
+ res.send(accountinfo);
  }
  catch(err){
      res.status(404).send('Not Found');
