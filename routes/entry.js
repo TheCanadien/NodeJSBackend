@@ -120,6 +120,9 @@ router.get('/:date/:date2/:username', verify, async (req,res) =>{
 //Delete specific meal data
 router.patch('/:date/:username/:mealnum', verify, async (req,res) =>{
 
+  const reducecalories = req.body.reducecals;
+  console.log(reducecalories);
+
   if(req.user.name !== req.params.username){
     return res.status(400).send("You don't have access")
   }
@@ -132,9 +135,11 @@ router.patch('/:date/:username/:mealnum', verify, async (req,res) =>{
       user_name : req.params.username},
        {$pull: {"food_item": {"meal_number" : req.params.mealnum}}});
        console.log(removeEntry);
-       const reduce_calories = remove
-      
-       res.json(removeEntry);
+       removeEntry.total_calories = parseInt(removeEntry.total_calories) - parseInt(reducecalories);
+       await removeEntry.save();
+       const updatedEntry = await Entry.findOne({date: {$lt : nextDate, $gte : queryDate},
+        user_name : req.params.username});
+       res.json(updatedEntry);
     }
     
     catch(err){
