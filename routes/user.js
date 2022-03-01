@@ -8,7 +8,7 @@ const Entry = require('../models/Entry');
 //update personal data
 router.patch('/', verify, async (req,res) =>{
  try{
- const myaccount = await User.updateOne({ name: req.user.name }, 
+ const myaccount = await User.findOneAndUpdate({ name: req.user.name }, 
     {$set: {weight: req.body.weight, birthday: req.body.birthday, height: req.body.height, public: req.body.public}});
     res.send(myaccount);
  }
