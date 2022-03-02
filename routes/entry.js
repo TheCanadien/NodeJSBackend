@@ -108,7 +108,7 @@ router.get('/:date/:date2/:username', verify, async (req,res) =>{
       nextDate.setDate(nextDate.getDate() + 1)
     
       const entry = await Entry.find({date: {$lt : nextDate, $gte : queryDate},
-         user_name : req.params.username})
+         user_name : req.params.username }).sort({date: 1});
   
       res.json(entry);
       }
