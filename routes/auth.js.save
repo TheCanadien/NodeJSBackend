@@ -18,7 +18,7 @@ router.post('/register', async (req, res) => {
     const userNameExists = await User.findOne({ name: req.body.name });
     const userEmailExists = await User.findOne({ email: req.body.email });
     
-    if (userNameExists) return res.status(400).send("Username already exists");
+    if (userNameExists) return res.status(400).send("Username ");
 
     if (userEmailExists) return res.status(400).send("Email already exists");
 //salt and then encrypt password for storage in DB
