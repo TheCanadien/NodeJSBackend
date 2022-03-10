@@ -64,16 +64,24 @@ router.post('/login', async (req, res) => {
     username: user.name,    
     token : refreshtoken
      }});
-    const findValid = await Valid.findOne({username: user.name});
-  // console.log(findValid);
+
+
+    //console.log(user.name);
+    const findValid = await Valid.findOne({"valid.username": user.name});
+
+    //console.log(findValid + "find valid");
+   // console.log('-----------------------------------------------------------------');
+    //console.log('-----------------------------------------------------------------');
     if(findValid){
          await Valid.deleteOne({username: user.name});
-      //  console.log("deleted");
+
     }
 
     const val = await validtoke.save();
- //   console.log(val);
-    res.header('auth-token', refreshtoken).send({accesstoken});
+    //
+     console.log(val + "save valid");
+   // res.header('auth-token', refreshtoken).send({accesstoken});
+   res.cookie('auth-token', refreshtoken, { httpOnly: true }).send({accesstoken});
 });
 
 

@@ -4,10 +4,15 @@ const mongoose = require('mongoose');
 require('dotenv/config');
 const bodyParser = require('body-parser');
 const cors = require('cors');
+const cookieParser = require('cookie-parser');
+
 
 //Middlewares
 app.use(cors({exposedHeaders: ['Content-Length', 'auth-token'],}));
 app.use(bodyParser.json());
+app.use(cookieParser());
+
+
 
 //Import Routes
 const entryRoute = require('./routes/entry');
