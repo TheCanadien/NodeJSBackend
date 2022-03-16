@@ -1,14 +1,17 @@
 const jwt = require('jsonwebtoken');
 const Valid = require('./models/Valid');
+const express = require('express');
+const app = express();
 
 //test
 module.exports = async function (req, res, next) {
-    const token = req.header('auth-token');
+   const token = req.cookies['auth-token'];
     const accessToken = req.header('Authorization');
 //////////////////////////////////////////////////////////
-console.log(req.header('Authorization'));
-console.log(req.params);
-
+//console.log(req.header('Authorization'));
+//console.log(req.params);
+//console.log('Cookies: ',req.cookies['auth-token'])
+console.log("here is token" + " " + token );
 
 
 /////////////////////////////////////////
@@ -70,13 +73,13 @@ function validatedToken(token, secretkey){
         token : refreshtoken
          }});
         const findValid = await Valid.findOne({username: user_name});
-       // console.log(findValid);
+       console.log(findValid);
         if(findValid){
              await Valid.deleteOne({username: user_name});
-          //  console.log("deleted");
+           console.log("deleted");
         }
     
         const val = await validtoke.save();
-         console.log('5');
-        res.header('auth-token', refreshtoken).send({accesstoken});
+        //console.log('5');
+        res.cookie('auth-token', refreshtoken, {httpOnly: true, sameSite: 'lax'}).send({accesstoken});
 }

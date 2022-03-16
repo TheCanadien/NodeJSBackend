@@ -8,7 +8,8 @@ const cookieParser = require('cookie-parser');
 
 
 //Middlewares
-app.use(cors({exposedHeaders: ['Content-Length', 'auth-token'],}));
+app.use(cors({exposedHeaders: ['Content-Length', 'auth-token'] , credentials: true, allowHeaders :['x-csrf-token', 'auth-token',' Content-Type'],
+ origin: ['http://www.mealstracker.com', 'http://52.4.202.130']}));
 app.use(bodyParser.json());
 app.use(cookieParser());
 

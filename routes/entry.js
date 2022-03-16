@@ -27,7 +27,11 @@ router.get('/', verify, async(req,res) =>{
  
   try{
   const validUser = await User.findOne({name: req.user.name});
-  console.log(validUser);  
+//  console.log(validUser); 
+
+console.log('Cookies: ', JSON.stringify(req.cookies));
+
+ 
 res.json(validUser.name);
   }
   catch(err){

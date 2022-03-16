@@ -54,7 +54,7 @@ router.post('/login', async (req, res) => {
     const loguser = {name: user.name};
 
     //Create and assign tokens
-    const accesstoken = jwt.sign(loguser, process.env.TOKEN_SECRET, {expiresIn: '30000m' });
+    const accesstoken = jwt.sign(loguser, process.env.TOKEN_SECRET, {expiresIn: '1m' });
     const refreshtoken = jwt.sign(loguser, process.env.REFRESH_TOKEN_SECRET);
 
    
@@ -69,7 +69,7 @@ router.post('/login', async (req, res) => {
     //console.log(user.name);
     const findValid = await Valid.findOne({"valid.username": user.name});
 
-    //console.log(findValid + "find valid");
+//    console.log(findValid + "find valid");
    // console.log('-----------------------------------------------------------------');
     //console.log('-----------------------------------------------------------------');
     if(findValid){
@@ -80,8 +80,10 @@ router.post('/login', async (req, res) => {
     const val = await validtoke.save();
     //
      console.log(val + "save valid");
-   // res.header('auth-token', refreshtoken).send({accesstoken});
-   res.cookie('auth-token', refreshtoken, { httpOnly: true }).send({accesstoken});
+  //  res.header('auth-token', refreshtoken).send({accesstoken});
+   res.cookie('auth-token', refreshtoken, {httpOnly: true, sameSite: 'lax'}).send({accesstoken});
+//      res.cookie('acookie', 'cookiecookie').send({accesstoken});
+
 });
 
 
@@ -92,7 +94,7 @@ router.post('/login', async (req, res) => {
 
 router.post('/logout', async (req,res) =>
 {
- const token = req.header('auth-token');
+ const token = req.cookies['auth-token'];
  try{
  const deleteValid = await Valid.deleteOne({token: token});
   res.status(200).send('Successful logout');
