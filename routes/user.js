@@ -77,6 +77,12 @@ console.log(req.params);
 
 });
 
+router.post('/:username', async(req,res)=>{
+
+
+});
+
+
 
 
 

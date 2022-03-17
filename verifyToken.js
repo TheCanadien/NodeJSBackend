@@ -64,7 +64,7 @@ function validatedToken(token, secretkey){
     const loguser = {name: user_name};
 
 
-    const accesstoken = jwt.sign(loguser, process.env.TOKEN_SECRET, {expiresIn: '30m' });
+    const accesstoken = jwt.sign(loguser, process.env.TOKEN_SECRET, {expiresIn: '1m' });
     const refreshtoken = jwt.sign(loguser, process.env.REFRESH_TOKEN_SECRET);
     const validtoke = new Valid(
         {
