@@ -3,6 +3,7 @@ const router = express.Router();
 const User = require('../models/User');
 const verify = require('../verifyToken');
 const Entry = require('../models/Entry');
+const renew = require('../renewToken');
 
 
 //update personal data
@@ -77,13 +78,9 @@ console.log(req.params);
 
 });
 
-router.post('/:username', async(req,res)=>{
-
+router.post('/:username', renew, async(req,res)=>{
 
 });
-
-
-
 
 
 
