@@ -78,11 +78,11 @@ console.log(req.params);
 
 });
 
-/*
-router.post('/:username', renew, async(req,res)=>{
-res.status(200);
+
+router.get('/:username', verify, async(req,res)=>{
+res.status(200).send("hey");
 });
-*/
+
 
 
 module.exports = router;
