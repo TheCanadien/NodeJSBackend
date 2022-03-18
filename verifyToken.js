@@ -4,11 +4,13 @@ const express = require('express');
 const app = express();
 
 //test
+/*
 module.exports = async function (req, res, next) {
    const token = req.cookies['auth-token'];
     const accessToken = req.header('Authorization');
 console.log(token);
 console.log('1');
+
     //If access token doesn't exist
     if (!accessToken) return res.status(401).send('Access Denied');
        const verified = validatedToken(accessToken, process.env.TOKEN_SECRET);
@@ -20,8 +22,8 @@ console.log('2');
  console.log('3');
         next();
         }else{
-        console.log('what');
-        console.log("This is a token " + token);
+//        console.log('what');
+ //       console.log("This is a token " + token);
         //if refresh token doesn't exist
         if(!token) return res.status(404).send('Access Denied');
         //check refresh is in valid collection
@@ -37,6 +39,37 @@ console.log('5');
           res.status(400).send('You do not have access');
        }
 
+       }    
+}
+*/
+/////////////////////////////////////////////////////////////////
+
+
+
+
+module.exports = async function (req, res, next) {
+   const token = req.cookies['auth-token'];
+    const accessToken = req.header('Authorization');
+if(!token || accessToken)  return res.status(401).send('Access Denied');
+const verified = validatedToken(accessToken, process.env.TOKEN_SECRET);
+       //if token is valid
+       if(verified)
+       {
+        req.user = verified;
+        next();
+        }
+        else
+        {
+        const checkValid = await Valid.findOne({"valid.token": token});
+       if(checkValid)
+       {
+        //console.log(checkValid.valid.username);
+        renewTokens(checkValid.valid.username, res, req);
+        next();
+       }
+       else{
+          res.status(400).send('You do not have access');
+       }
        }
       
 }
@@ -56,8 +89,6 @@ function validatedToken(token, secretkey){
   
     //Create and assign tokens
     const loguser = {name: user_name};
-
-
     const accesstoken = jwt.sign(loguser, process.env.TOKEN_SECRET, {expiresIn: '1m' });
     const refreshtoken = jwt.sign(loguser, process.env.REFRESH_TOKEN_SECRET);
     const validtoke = new Valid(
@@ -72,7 +103,6 @@ function validatedToken(token, secretkey){
              await Valid.deleteOne({username: user_name});
            console.log("deleted");
         }
-    
         const val = await validtoke.save();
         //console.log('5');
         res.cookie('auth-token', refreshtoken, {httpOnly: true, sameSite: 'lax'}).send({accesstoken});
