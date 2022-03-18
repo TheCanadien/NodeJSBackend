@@ -4,7 +4,7 @@ const express = require('express');
 const app = express();
 
 //test
-/*
+
 module.exports = async function (req, res, next) {
    const token = req.cookies['auth-token'];
     const accessToken = req.header('Authorization');
@@ -41,12 +41,12 @@ console.log('5');
 
        }    
 }
-*/
+
 /////////////////////////////////////////////////////////////////
 
 
 
-
+/*
 module.exports = async function (req, res, next) {
    const token = req.cookies['auth-token'];
     const accessToken = req.header('Authorization');
@@ -73,7 +73,7 @@ const verified = validatedToken(accessToken, process.env.TOKEN_SECRET);
        }
       
 }
-
+*/
 
 //Works
 function validatedToken(token, secretkey){
