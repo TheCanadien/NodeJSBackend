@@ -9,7 +9,7 @@ module.exports = async function (req, res, next) {
    const token = req.cookies['auth-token'];
     //If access token doesn't exist
     if (!token) return res.status(401).send('Access Denied');
-       const verified = validatedToken(accessToken, process.env.REFRESH_TOKEN_SECRET);
+       const verified = validatedToken(token, process.env.REFRESH_TOKEN_SECRET);
        if(verified)
        {
         req.user = verified;

@@ -39,6 +39,7 @@ router.post('/register', async (req, res) => {
     }
 });
 
+
 //Log user in and assign JWT token
 router.post('/login', async (req, res) => {
 
@@ -54,10 +55,10 @@ router.post('/login', async (req, res) => {
     const loguser = {name: user.name};
 
     //Create and assign tokens
-   // const accesstoken = jwt.sign(loguser, process.env.TOKEN_SECRET, {expiresIn: '1m' });
+   const accesstoken = jwt.sign(loguser, process.env.TOKEN_SECRET, {expiresIn: '1m' });
     const refreshtoken = jwt.sign(loguser, process.env.REFRESH_TOKEN_SECRET, {expiresIn: '120m'});
 
-   res.cookie('auth-token', refreshtoken, {httpOnly: true, sameSite: 'lax'}).send('success');
+   res.cookie('auth-token', refreshtoken, {httpOnly: true, sameSite: 'lax'}).send({accesstoken});
 
 });
 
