@@ -80,7 +80,7 @@ router.post('/login', async (req, res) => {
     const loguser = {name: user.name};
 
     //Create and assign tokens
-    const accesstoken = jwt.sign(loguser, process.env.TOKEN_SECRET, {expiresIn: '1m' });
+    const accesstoken = jwt.sign(loguser, process.env.TOKEN_SECRET, {expiresIn: '2m' });
     const refreshtoken = jwt.sign(loguser, process.env.REFRESH_TOKEN_SECRET);
 
    

@@ -5,25 +5,6 @@ const app = express();
 
 
 //Verify Token
-/*
-module.exports = async function (req, res, next) {
-   const token = req.cookies['auth-token'];
-    //If access token doesn't exist
-    if (!token) return res.status(401).send('Access Denied');
-       const verified = validatedToken(token, process.env.REFRESH_TOKEN_SECRET);
-       if(verified)
-       {
-        req.user = verified;
-        next();
-        }
-        else{
-          return res.status(401).send('Access Denied');
-        }   
-}
-*/
-
-
-
 module.exports = async function (req, res, next) {
    const token = req.cookies['auth-token'];
     const accessToken = req.header('Authorization');
@@ -34,7 +15,7 @@ module.exports = async function (req, res, next) {
     if (!accessToken) return res.status(401).send('Access Denied');
        const verified = validatedToken(accessToken, process.env.TOKEN_SECRET);
        //if token is valid
-console.log('2');
+console.log('2 ' + accessToken);
        if(verified)
        {
         req.user = verified;
@@ -42,10 +23,6 @@ console.log('2');
         next();
         }
         else{
-          return res.status(401).send('Access Denied');
-        }
-
-     
 //        console.log('what');
  //       console.log("This is a token " + token);
         //if refresh token doesn't exist
@@ -64,7 +41,7 @@ console.log('5');
        }
 
        }   
-      
+      }
 
 
 //Validate Token
