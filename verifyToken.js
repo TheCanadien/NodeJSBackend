@@ -5,6 +5,7 @@ const app = express();
 
 
 //Verify Token
+/*
 module.exports = async function (req, res, next) {
    const token = req.cookies['auth-token'];
     //If access token doesn't exist
@@ -19,7 +20,7 @@ module.exports = async function (req, res, next) {
           return res.status(401).send('Access Denied');
         }   
 }
-
+*/
 
 //Validate Token
 function validatedToken(token, secretkey){
@@ -32,10 +33,10 @@ function validatedToken(token, secretkey){
   }
 
 
-/*
+
 module.exports = async function (req, res, next) {
    const token = req.cookies['auth-token'];
-//    const accessToken = req.header('Authorization');
+    const accessToken = req.header('Authorization');
 //console.log(token);
 //console.log('1');
 
@@ -75,10 +76,10 @@ console.log('5');
        }   
       
 }
-*/
 
 
-  /*
+
+  
   async function renewTokens(user_name, res, req){
   
     //Create and assign tokens
@@ -102,4 +103,4 @@ console.log('5');
         res.cookie('auth-token', refreshtoken, {httpOnly: true, sameSite: 'lax'}).send({accesstoken});
        req.user = accesstoken;
 }
-*/
+

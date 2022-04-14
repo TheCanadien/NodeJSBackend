@@ -40,6 +40,7 @@ router.post('/register', async (req, res) => {
 });
 
 
+/*
 //Log user in and assign JWT token
 router.post('/login', async (req, res) => {
 
@@ -61,9 +62,9 @@ router.post('/login', async (req, res) => {
    res.cookie('auth-token', refreshtoken, {httpOnly: true, sameSite: 'lax'}).send({accesstoken});
 
 });
+*/
 
 
-/*
 //Log user in and assign JWT token
 router.post('/login', async (req, res) => {
 
@@ -110,7 +111,7 @@ router.post('/login', async (req, res) => {
 //      res.cookie('acookie', 'cookiecookie').send({accesstoken});
 
 });
-*/
+
 
 /*
 router.post('/logout', async (req,res) =>
