@@ -7,13 +7,13 @@ const app = express();
 
 module.exports = async function (req, res, next) {
    const token = req.cookies['auth-token'];
-    const accessToken = req.header('Authorization');
-console.log(token);
-console.log('1');
+//    const accessToken = req.header('Authorization');
+//console.log(token);
+//console.log('1');
 
     //If access token doesn't exist
     if (!accessToken) return res.status(401).send('Access Denied');
-       const verified = validatedToken(accessToken, process.env.TOKEN_SECRET);
+       const verified = validatedToken(accessToken, process.env.REFRESH_TOKEN_SECRET);
        //if token is valid
 console.log('2');
        if(verified)
@@ -21,7 +21,12 @@ console.log('2');
         req.user = verified;
  console.log('3');
         next();
-        }else{
+        }
+        else{
+          return res.status(401).send('Access Denied');
+        }
+
+         /*
 //        console.log('what');
  //       console.log("This is a token " + token);
         //if refresh token doesn't exist
@@ -39,41 +44,13 @@ console.log('5');
           res.status(400).send('You do not have access');
        }
 
-       }    
+       }   
+       */ 
 }
 
 /////////////////////////////////////////////////////////////////
 
 
-
-/*
-module.exports = async function (req, res, next) {
-   const token = req.cookies['auth-token'];
-    const accessToken = req.header('Authorization');
-if(!token || accessToken)  return res.status(401).send('Access Denied');
-const verified = validatedToken(accessToken, process.env.TOKEN_SECRET);
-       //if token is valid
-       if(verified)
-       {
-        req.user = verified;
-        next();
-        }
-        else
-        {
-        const checkValid = await Valid.findOne({"valid.token": token});
-       if(checkValid)
-       {
-        //console.log(checkValid.valid.username);
-        renewTokens(checkValid.valid.username, res, req);
-        next();
-       }
-       else{
-          res.status(400).send('You do not have access');
-       }
-       }
-      
-}
-*/
 
 //Works
 function validatedToken(token, secretkey){
