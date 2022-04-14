@@ -32,7 +32,7 @@ module.exports = async function (req, res, next) {
 
     //If access token doesn't exist
     if (!accessToken) return res.status(401).send('Access Denied');
-       const verified = validatedToken(accessToken, process.env.REFRESH_TOKEN_SECRET);
+       const verified = validatedToken(accessToken, process.env.TOKEN_SECRET);
        //if token is valid
 console.log('2');
        if(verified)

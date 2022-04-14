@@ -113,7 +113,7 @@ router.post('/login', async (req, res) => {
 });
 
 
-/*
+
 router.post('/logout', async (req,res) =>
 {
  const token = req.cookies['auth-token'];
@@ -125,7 +125,7 @@ router.post('/logout', async (req,res) =>
      res.status(403).send('Could not logout');
  }
 });
-*/
+
 
 
 
