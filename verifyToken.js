@@ -22,16 +22,6 @@ module.exports = async function (req, res, next) {
 }
 */
 
-//Validate Token
-function validatedToken(token, secretkey){
-    try{
-       return jwt.verify(token, secretkey);
-    }
-  catch(err){
-      return null;
-  }
-  }
-
 
 
 module.exports = async function (req, res, next) {
@@ -75,11 +65,19 @@ console.log('5');
 
        }   
       
+
+
+//Validate Token
+function validatedToken(token, secretkey){
+  try{
+     return jwt.verify(token, secretkey);
+  }
+catch(err){
+    return null;
+}
 }
 
 
-
-  
   async function renewTokens(user_name, res, req){
   
     //Create and assign tokens
