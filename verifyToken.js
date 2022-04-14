@@ -3,8 +3,36 @@ const Valid = require('./models/Valid');
 const express = require('express');
 const app = express();
 
-//test
 
+//Verify Token
+module.exports = async function (req, res, next) {
+   const token = req.cookies['auth-token'];
+    //If access token doesn't exist
+    if (!token) return res.status(401).send('Access Denied');
+       const verified = validatedToken(accessToken, process.env.REFRESH_TOKEN_SECRET);
+       if(verified)
+       {
+        req.user = verified;
+        next();
+        }
+        else{
+          return res.status(401).send('Access Denied');
+        }   
+}
+
+
+//Validate Token
+function validatedToken(token, secretkey){
+    try{
+       return jwt.verify(token, secretkey);
+    }
+  catch(err){
+      return null;
+  }
+  }
+
+
+/*
 module.exports = async function (req, res, next) {
    const token = req.cookies['auth-token'];
 //    const accessToken = req.header('Authorization');
@@ -26,7 +54,7 @@ console.log('2');
           return res.status(401).send('Access Denied');
         }
 
-         /*
+     
 //        console.log('what');
  //       console.log("This is a token " + token);
         //if refresh token doesn't exist
@@ -45,23 +73,12 @@ console.log('5');
        }
 
        }   
-       */ 
+      
 }
-
-/////////////////////////////////////////////////////////////////
-
+*/
 
 
-//Works
-function validatedToken(token, secretkey){
-    try{
-       return jwt.verify(token, secretkey);
-    }
-  catch(err){
-      return null;
-  }
-  }
-
+  /*
   async function renewTokens(user_name, res, req){
   
     //Create and assign tokens
@@ -85,3 +102,4 @@ function validatedToken(token, secretkey){
         res.cookie('auth-token', refreshtoken, {httpOnly: true, sameSite: 'lax'}).send({accesstoken});
        req.user = accesstoken;
 }
+*/
